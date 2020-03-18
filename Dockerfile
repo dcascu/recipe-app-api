@@ -1,5 +1,5 @@
 FROM python:3.7.7-alpine
-MAINTAINER London App Developer ltd
+MAINTAINER dcascu
 
 ENV PYTHONUNBUFFERED 1
 
