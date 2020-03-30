@@ -71,7 +71,8 @@ class ModelTests(TestCase):
             user=sample_user(),
             title='Steak and mushroom sauce',
             time_minutes=5,
-            price=5.00
+            price=5.00,
+            description='some testing description'
         )
 
         self.assertEqual(str(recipe), recipe.title)

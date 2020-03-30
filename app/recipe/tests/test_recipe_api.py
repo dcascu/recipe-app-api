@@ -41,7 +41,8 @@ def sample_recipe(user, **params):
     defaults = {
         'title': 'Sample recipe',
         'time_minutes': 10,
-        'price': 5.00
+        'price': 5.00,
+        'description': 'Sample description'
     }
     defaults.update(params)
 
@@ -53,11 +54,11 @@ class PublicRecipeApiTests(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-    def test_login_required(self):
-        """ Test that login is required for retrieving recipes """
+    def test_login_not_required(self):
+        """ Test that login is not required for retrieving recipes """
         res = self.client.get(RECIPE_URL)
 
-        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
 
 
 class PrivateRecipeApiTests(TestCase):
@@ -83,24 +84,6 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    def test_recipes_limited_to_user(self):
-        """Test that recipes belong to logged in user"""
-        user2 = get_user_model().objects.create_user(
-            'other@londonappdev.com',
-            'Test1232'
-        )
-        sample_recipe(user=user2)
-        sample_recipe(user=self.user)
-
-        res = self.client.get(RECIPE_URL)
-
-        recipes = Recipe.objects.filter(user=self.user)
-        serializer = RecipeSerializer(recipes, many=True)
-
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(res.data), 1)
-        self.assertEqual(res.data, serializer.data)
-
     def test_recipe_details(self):
         """ Testing recipe details returns succesfuly """
 
@@ -120,7 +103,8 @@ class PrivateRecipeApiTests(TestCase):
         payload = {
             'title': 'Sample recipe',
             'time_minutes': 30,
-            'price': 5.00
+            'price': 5.00,
+            'description': 'some other description'
         }
         res = self.client.post(RECIPE_URL, payload)
 
@@ -137,6 +121,7 @@ class PrivateRecipeApiTests(TestCase):
             'title': 'Avocado lime cheescake',
             'time_minutes': 60,
             'price': 20.00,
+            'description': 'some other description',
             'tags': [tag1.id, tag2.id]
         }
         res = self.client.post(RECIPE_URL, payload)
@@ -156,6 +141,7 @@ class PrivateRecipeApiTests(TestCase):
             'title': 'Coffe toff',
             'time_minutes': 5,
             'price': 5.00,
+            'description': 'some other description',
             'ingredients': [ingredient1.id, ingredient2.id]
         }
         res = self.client.post(RECIPE_URL, payload)
@@ -199,7 +185,8 @@ class PrivateRecipeApiTests(TestCase):
         payload = {
             'title': 'Spaguetti carbonara',
             'time_minutes': 25,
-            'price': 5.00
+            'price': 5.00,
+            'description': 'some other description'
         }
         url = detail_url(recipe.id)
         self.client.put(url, payload)
@@ -250,7 +237,7 @@ class RecipeImageUploadTests(TestCase):
 
     def test_filter_recipes_by_tags(self):
         """Test returning recipes with specific tags"""
-        recipe1 = sample_recipe(user=self.user, title='Thai vegetables with curry')
+        recipe1 = sample_recipe(user=self.user, title='Thai veg. with curry')
         recipe2 = sample_recipe(user=self.user, title='Aubergine with thaini')
         recipe3 = sample_recipe(user=self.user, title='Fish and chips')
         tag1 = sample_tag(user=self.user, name='Vegan')
@@ -272,7 +259,7 @@ class RecipeImageUploadTests(TestCase):
 
     def test_filter_recipes_by_ingredients(self):
         """Test returning recipes with specific ingredients"""
-        recipe1 = sample_recipe(user=self.user, title='Thai vegetables with curry')
+        recipe1 = sample_recipe(user=self.user, title='Thai veg. with curry')
         recipe2 = sample_recipe(user=self.user, title='Aubergine with thaini')
         recipe3 = sample_recipe(user=self.user, title='Fish and chips')
         ingredient1 = sample_ingredient(user=self.user, name='Curry')

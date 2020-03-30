@@ -2,7 +2,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets, mixins, status
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, \
+                                       IsAuthenticatedOrReadOnly
 
 from core.models import Tag, Ingredient, Recipe
 from recipe import serializers
@@ -12,7 +13,7 @@ class BaseRecipeAttrViewSet(viewsets.GenericViewSet,
                             mixins.ListModelMixin,
                             mixins.CreateModelMixin):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         """Return object of authenticated user"""
@@ -30,8 +31,6 @@ class BaseRecipeAttrViewSet(viewsets.GenericViewSet,
     def perform_create(self, serializer):
         """Create a new object"""
         serializer.save(user=self.request.user)
-
-
 
 
 class TagViewSet(BaseRecipeAttrViewSet):
@@ -70,7 +69,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             ingredients_ids = self._params_to_ints(ingredients)
             queryset = queryset.filter(ingredients__id__in=ingredients_ids)
 
-        return queryset
+        return queryset.order_by('-id')
 
     def get_serializer_class(self):
         """Return apropiate serializer class"""
@@ -84,7 +83,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Create a new recipe"""
         serializer.save(user=self.request.user)
-
 
     @action(methods=['POST'], detail=True, url_path='upload-image')
     def upload_image(self, request, pk=None):
