@@ -1,8 +1,12 @@
 Welcome to the recipe-app-api wiki!
+Developed usinf DRF and Docker Compose
+
 This api allows to perform CRUD operations over a Recipe, and uses custom user to authenticate.
 * Users can create any recipe
 * Users can list all the recipes
 * Users can update/delete their own recipes
+
+
 
 # User
 ## Properties (custom)
@@ -30,12 +34,13 @@ This api allows to perform CRUD operations over a Recipe, and uses custom user t
 * A recipe can have many ingredients
 
 ## Methods
-* create: api/recipe/recipes/ - POST (authentication required) 
+* create: api/recipe/recipes/ - POST (authentication required)
 * update: (authentication required)
 * * api/recipe/recipes/{id}/ PUT  - updates the entire recipe with id={id}
 * * api/recipe/recipes/{id}/ PATCH - partially updates the recipe with id={id}
 * delete: api/recipe/recipes/{id}/ DELETE (authentication required) - deletes the recipe with id={id}
 * list: api/recipe/recipes/ GET - return the list of all recipes in the system
+* upload-image: api/recipe/recipes/{id}/upload-image POST - upload an image for the recipe with id={id}
 
 # Tags
 ## Properites
