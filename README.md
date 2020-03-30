@@ -12,9 +12,9 @@ This api allows to perform CRUD operations over a Recipe, and uses custom user t
 * Is_Staff
 
 ## Methods:
-* create (only superuser) - api/user/create
-* details - api/user/me
-* login - api/user/token
+* create: api/user/create
+* details: api/user/me
+* login: api/user/token
 
 # Recipe
 ## Properties
@@ -30,12 +30,12 @@ This api allows to perform CRUD operations over a Recipe, and uses custom user t
 * A recipe can have many ingredients
 
 ## Methods
-* create : api/recipe/recipes/ - POST (authentication required) 
-* update : (authentication required)
+* create: api/recipe/recipes/ - POST (authentication required) 
+* update: (authentication required)
 * * api/recipe/recipes/{id}/ PUT  - updates the entire recipe with id={id}
 * * api/recipe/recipes/{id}/ PATCH - partially updates the recipe with id={id}
-* delete : api/recipe/recipes/{id}/ DELETE (authentication required) - deletes the recipe with id={id}
-* list : api/recipe/recipes/ GET - return the list of all recipes in the system
+* delete: api/recipe/recipes/{id}/ DELETE (authentication required) - deletes the recipe with id={id}
+* list: api/recipe/recipes/ GET - return the list of all recipes in the system
 
 # Tags
 ## Properites
@@ -52,5 +52,5 @@ This api allows to perform CRUD operations over a Recipe, and uses custom user t
 * name
 
 ## Methods
-* list_ api/recipe/ingredients GET - list all ingredients in the system
-* create api/recipe/ingredients POST - add new ingredient to the system
+* list: api/recipe/ingredients GET - list all ingredients in the system
+* create: api/recipe/ingredients POST - add new ingredient to the system
